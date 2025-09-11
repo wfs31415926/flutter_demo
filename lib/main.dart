@@ -15,16 +15,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return GetMaterialApp(
+      title: 'Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
       home: const HomePage(title: '主页面'),
-      builder: (context, child) {
-        return child!;
-      },
       supportedLocales: const [
         Locale('en', 'US'),
         Locale('zh', 'CN'),
@@ -36,22 +33,20 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       routes: <String, WidgetBuilder>{
-        "login": (context) => const LoginRoute(),
-        "unknown": (context) => const UnknownRoutePage(),
-        // "language": (context) => LanguageRoute(),
+        "login": (context) => const LoginPage(),
+        // "unknown": (context) => const UnknownPage(),
       },
       onUnknownRoute: (RouteSettings settings) {
         print('尝试导航到一个未知的路由: ${settings.name}');
         return MaterialPageRoute(
           builder: (BuildContext context) {
-            return UnknownRoutePage(
+            return UnknownPage(
                 routeName: settings.name, arguments: settings.arguments);
           },
         );
       },
     );
   }
-
 }
 
 class HomePage extends StatefulWidget {
@@ -64,11 +59,38 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
+  int currentIndex = 0;
+  late PageController _controller;
+
+  List<Map<String, dynamic>> functionMapList = [
+    {
+      "title": "登录相关",
+      "pages": {
+        "登录界面": () {
+          Get.to(const LoginPage());
+        },
+        "登录界面2": () {
+          Get.to(const LoginPage());
+        },
+        "登录界面3": () {
+          Get.to(const LoginPage());
+        }
+      }
+    },
+    {
+      "title": "未知",
+      "pages": {
+        "未知界面": () {
+          Get.to(const UnknownPage());
+        },
+      }
+    }
+  ];
 
   @override
   void initState() {
     super.initState();
+    _controller = PageController(initialPage: currentIndex);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FloatingButtonManager.showButton(context);
     });
@@ -80,15 +102,6 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-    //导航到新路由
-    Get.to(const LoginRoute());
-    // Get.toNamed("unknown");
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,26 +109,90 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              '你点击按钮次数:',
+      body: Column(
+        children: [
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: _buildTab(),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          Expanded(
+            child: PageView(
+              controller: _controller,
+              children: functionMapList.map((e) {
+                return _buildContent();
+              }).toList(),
+              onPageChanged: (value) {
+                setState(() {
+                  currentIndex = value;
+                });
+              },
             ),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContent() {
+    final data = functionMapList[currentIndex]["pages"].entries.toList();
+    return ListView.separated(
+      padding: EdgeInsets.zero,
+      itemBuilder: (context, index) => Container(
+        color: Colors.white,
+        child: ListTile(
+          title: Text(
+            data[index].key,
+            style: const TextStyle(
+              color: Colors.blue,
+              fontSize: 16,
+            ),
+          ),
+          onTap: () {
+            data[index].value();
+          },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: '增量',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      separatorBuilder: (context, index) => Container(
+        color: Colors.white,
+        child: const Divider(
+          height: 0.5,
+          thickness: 0.5,
+          indent: 10,
+          endIndent: 10,
+          color: Colors.white,
+        ),
+      ),
+      itemCount: data.length,
     );
+  }
+
+  List<Widget> _buildTab() {
+    return functionMapList.map((e) {
+      int index = functionMapList.indexOf(e);
+      bool selected = currentIndex == index;
+
+      return GestureDetector(
+        onTap: () {
+          currentIndex = index;
+          _controller.jumpToPage(currentIndex);
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            functionMapList[index]["title"].toString(),
+            style: TextStyle(
+              color: selected ? Colors.blue : Colors.blueGrey,
+              fontSize: selected ? 18 : 16,
+              fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+        ),
+      );
+    }).toList();
   }
 }
 
@@ -154,12 +231,9 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
       bottom: MediaQuery.of(context).padding.bottom + 20,
       child: FloatingActionButton(
         onPressed: () {
-          // 点击事件：例如跳转页面
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginRoute()),
-          );
+          Get.to(const LoginPage());
         },
+        tooltip: "全局按钮",
         child: const Icon(Icons.ac_unit),
       ),
     );
