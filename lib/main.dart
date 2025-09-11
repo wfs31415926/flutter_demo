@@ -1,4 +1,8 @@
-import 'package:demo/unknown.dart';
+import 'package:common/base/app.dart';
+import 'package:common/base/route.dart';
+import 'package:common/comm.dart';
+import 'package:common/module.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -6,7 +10,38 @@ import 'package:get/get.dart';
 import 'login.dart';
 
 void main() {
+  startApp();
+}
+
+Future<void> startApp() async {
+  if (!kIsWeb && (GetPlatform.isAndroid || GetPlatform.isIOS)) {
+    await initApp(mainEngine: true);
+  }
+}
+
+///初始化
+Future<void> initApp({bool mainEngine = true}) async {
+  // 如果需要 ensureInitialized，请在这里运行。
+  await App.init(mainEngine: mainEngine);
+  addAppPage();
+  initModule();
   runApp(const MyApp());
+}
+
+///添加app的路由
+void addAppPage() {
+  AppRoute.addPages([
+    // GetPage(name: AppRoute.init, page: () => SplashPage()),
+  ]);
+}
+
+///初始化各个模块
+void initModule() {
+  CommonModule.init();
+  //注册公共可访问路由
+  // if (!GetPlatform.isWeb) {
+  //   applicationOpenUrl.registerOpenUrl();
+  // }
 }
 
 class MyApp extends StatelessWidget {
@@ -37,7 +72,6 @@ class MyApp extends StatelessWidget {
         // "unknown": (context) => const UnknownPage(),
       },
       onUnknownRoute: (RouteSettings settings) {
-        print('尝试导航到一个未知的路由: ${settings.name}');
         return MaterialPageRoute(
           builder: (BuildContext context) {
             return UnknownPage(
@@ -59,38 +93,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int currentIndex = 0;
-  late PageController _controller;
-
-  List<Map<String, dynamic>> functionMapList = [
-    {
-      "title": "登录相关",
-      "pages": {
-        "登录界面": () {
-          Get.to(const LoginPage());
-        },
-        "登录界面2": () {
-          Get.to(const LoginPage());
-        },
-        "登录界面3": () {
-          Get.to(const LoginPage());
-        }
-      }
-    },
-    {
-      "title": "未知",
-      "pages": {
-        "未知界面": () {
-          Get.to(const UnknownPage());
-        },
-      }
-    }
-  ];
-
   @override
   void initState() {
     super.initState();
-    _controller = PageController(initialPage: currentIndex);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FloatingButtonManager.showButton(context);
     });
@@ -109,90 +114,10 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Column(
-        children: [
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _buildTab(),
-            ),
-          ),
-          Expanded(
-            child: PageView(
-              controller: _controller,
-              children: functionMapList.map((e) {
-                return _buildContent();
-              }).toList(),
-              onPageChanged: (value) {
-                setState(() {
-                  currentIndex = value;
-                });
-              },
-            ),
-          ),
-        ],
+      body: const Center(
+        child: Text("主页"),
       ),
     );
-  }
-
-  Widget _buildContent() {
-    final data = functionMapList[currentIndex]["pages"].entries.toList();
-    return ListView.separated(
-      padding: EdgeInsets.zero,
-      itemBuilder: (context, index) => Container(
-        color: Colors.white,
-        child: ListTile(
-          title: Text(
-            data[index].key,
-            style: const TextStyle(
-              color: Colors.blue,
-              fontSize: 16,
-            ),
-          ),
-          onTap: () {
-            data[index].value();
-          },
-        ),
-      ),
-      separatorBuilder: (context, index) => Container(
-        color: Colors.white,
-        child: const Divider(
-          height: 0.5,
-          thickness: 0.5,
-          indent: 10,
-          endIndent: 10,
-          color: Colors.white,
-        ),
-      ),
-      itemCount: data.length,
-    );
-  }
-
-  List<Widget> _buildTab() {
-    return functionMapList.map((e) {
-      int index = functionMapList.indexOf(e);
-      bool selected = currentIndex == index;
-
-      return GestureDetector(
-        onTap: () {
-          currentIndex = index;
-          _controller.jumpToPage(currentIndex);
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            functionMapList[index]["title"].toString(),
-            style: TextStyle(
-              color: selected ? Colors.blue : Colors.blueGrey,
-              fontSize: selected ? 18 : 16,
-              fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-            ),
-          ),
-        ),
-      );
-    }).toList();
   }
 }
 
@@ -231,7 +156,7 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
       bottom: MediaQuery.of(context).padding.bottom + 20,
       child: FloatingActionButton(
         onPressed: () {
-          Get.to(const LoginPage());
+          Get.to(const TestPage());
         },
         tooltip: "全局按钮",
         child: const Icon(Icons.ac_unit),

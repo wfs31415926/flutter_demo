@@ -5,7 +5,7 @@ class UnknownPage  extends StatefulWidget {
   final String? routeName;
   final Object? arguments;
 
-  const UnknownPage({super.key, this.routeName, this.arguments});
+  const UnknownPage({key, this.routeName, this.arguments});
 
   @override
   State<UnknownPage> createState() => _UnknownPageState();

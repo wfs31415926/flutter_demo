@@ -1,0 +1,21 @@
+name: common
+description: flutter的基层库，负责初始化、路由、常量等
+version: 0.0.1
+homepage: ""
+publish_to: none
+
+environment:
+  sdk: ">=2.16.2 <4.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter_localizations:
+    sdk: flutter
+  flutter:
+    sdk: flutter
+  get: ^4.7.2
+  shared_preferences: ^2.0.7
+  sliver_tools: ^0.2.0
+  dio: ^4.0.6
+  logger: ^1.1.0
+  http: ^0.13.4
