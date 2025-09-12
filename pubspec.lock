@@ -56,6 +56,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.8"
+  decimal:
+    dependency: transitive
+    description:
+      name: decimal
+      sha256: eece91944f523657c75a3a008a90ec7f7eb3986191153a78570c7d0ac8ef3d01
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.3.2"
   dio:
     dependency: transitive
     description:
@@ -260,6 +268,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.8"
+  rational:
+    dependency: transitive
+    description:
+      name: rational
+      sha256: cb808fb6f1a839e6fc5f7d8cb3b0a10e1db48b3be102de73938c627f0b636336
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.2.3"
   shared_preferences:
     dependency: transitive
     description:

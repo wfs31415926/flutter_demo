@@ -1,6 +1,7 @@
-import 'package:common/page/unknown.dart';
+import 'package:common/page/gesture_detector_test.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../comm.dart';
 
 class TestPage extends StatefulWidget {
   const TestPage({key});
@@ -15,10 +16,18 @@ class _TestPageState extends State<TestPage> {
 
   List<Map<String, dynamic>> functionMapList = [
     {
-      "title": "登录相关",
+      "title": "登录",
       "pages": {
         "登录界面": () {
-          Get.to(const UnknownPage());
+          Get.to(LoginPage());
+        }
+      }
+    },
+    {
+      "title": "组件",
+      "pages": {
+        "手势组件": () {
+          Get.to(const GestureDetectorTestPage());
         }
       }
     },

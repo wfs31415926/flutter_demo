@@ -1,17 +1,14 @@
 import 'package:common/base/app.dart';
-import 'package:common/base/route.dart';
 import 'package:common/comm.dart';
 import 'package:common/module.dart';
+import 'package:common/resource/size.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
-import 'login.dart';
-
 void main() {
   startApp();
-
 }
 
 Future<void> startApp() async {
@@ -51,6 +48,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context,
+        designSize: const Size(AppSize.appWidth, AppSize.appHeight));
     return GetMaterialApp(
       title: 'Demo',
       theme: ThemeData(
@@ -98,7 +97,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      FloatingButtonManager.showButton(context);
+      FloatingButtonManager.showButton();
     });
   }
 
@@ -117,50 +116,6 @@ class _HomePageState extends State<HomePage> {
       ),
       body: const Center(
         child: Text("主页"),
-      ),
-    );
-  }
-}
-
-// 悬浮按钮管理类
-class FloatingButtonManager {
-  static OverlayEntry? _entry;
-
-  static void showButton(BuildContext context) {
-    if (_entry == null) {
-      _entry = OverlayEntry(
-        builder: (context) => const FloatingButtonWidget(),
-      );
-      Overlay.of(context).insert(_entry!);
-    }
-  }
-
-  static void hideButton() {
-    _entry?.remove();
-    _entry = null;
-  }
-}
-
-// 悬浮按钮 Widget
-class FloatingButtonWidget extends StatefulWidget {
-  const FloatingButtonWidget({super.key});
-
-  @override
-  _FloatingButtonWidgetState createState() => _FloatingButtonWidgetState();
-}
-
-class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      right: 80,
-      bottom: MediaQuery.of(context).padding.bottom + 20,
-      child: FloatingActionButton(
-        onPressed: () {
-          Get.to(const TestPage());
-        },
-        tooltip: "全局按钮",
-        child: const Icon(Icons.ac_unit),
       ),
     );
   }
