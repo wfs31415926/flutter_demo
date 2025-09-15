@@ -1,6 +1,7 @@
 import 'package:common/comm.dart';
 import 'package:common/debug/debug_controller.dart';
 import 'package:common/resource/size.dart';
+import 'package:common/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -45,7 +46,15 @@ class _FloatWidgetState extends State<FloatWidget> {
     return GestureDetector(
       onTap: widget.onTap,
       onDoubleTap: widget.onDoubleTap,
+      onTapDown: (details) {
+        logger.d("onTapDown");
+      },
+      onTapUp: (details) {
+        logger.d("onTapUp");
+      },
       onPanUpdate: (detail) {
+        logger.d("onPanUpdate");
+
         double offsetY = dy + detail.delta.dy;
         dx = dx - detail.delta.dx;
 
@@ -61,12 +70,16 @@ class _FloatWidgetState extends State<FloatWidget> {
         });
       },
       onPanEnd: (details) {
+        logger.d("onPanEnd");
+
         setState(() {
           dx = defaultDx;
           duration = const Duration(milliseconds: 500);
         });
       },
       onPanCancel: () {
+        logger.d("onPanCancel");
+
         setState(() {
           dx = defaultDx;
           duration = const Duration(milliseconds: 500);
