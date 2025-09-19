@@ -1,4 +1,5 @@
 import 'package:common/page/gesture_detector_test.dart';
+import 'package:common/page/gesture_detector_test2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../comm.dart';
@@ -28,6 +29,12 @@ class _TestPageState extends State<TestPage> {
       "pages": {
         "手势组件": () {
           Get.to(const GestureDetectorTestPage());
+        },
+        "手势组件2": () {
+          Get.to(const FingerFollowerDemo());
+        },
+        "图片轮播--全图": () {
+          // Get.to(const GestureDetectorTestPage());
         }
       }
     },

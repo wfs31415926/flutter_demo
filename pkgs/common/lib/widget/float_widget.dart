@@ -20,6 +20,7 @@ class _FloatWidgetState extends State<FloatWidget> {
   double maxHeight =
       ScreenUtil().screenHeight - ScreenUtil().bottomBarHeight - 50.w;
   double miniHeight = ScreenUtil().statusBarHeight + AppSize.titleBarHeight;
+  double maxWidth = ScreenUtil().screenWidth - 34.w; //图标右边最多到屏幕宽度减去自身宽度
   double defaultDx = 0.w;
   double dx = 0;
   double dy = 0;
@@ -65,6 +66,11 @@ class _FloatWidgetState extends State<FloatWidget> {
         } else {
           dy = offsetY;
         }
+        if (dx < 0) {
+          dx = 0;
+        } else if (dx > maxWidth) {
+          dx = maxWidth;
+        }
         setState(() {
           duration = const Duration(milliseconds: 100);
         });
@@ -79,7 +85,6 @@ class _FloatWidgetState extends State<FloatWidget> {
       },
       onPanCancel: () {
         logger.d("onPanCancel");
-
         setState(() {
           dx = defaultDx;
           duration = const Duration(milliseconds: 500);
