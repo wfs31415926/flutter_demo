@@ -1,14 +1,14 @@
 import 'package:common/comm.dart';
 import 'package:flutter/material.dart';
 
-class FingerFollowerDemo extends StatefulWidget {
-  const FingerFollowerDemo({key});
+class GestureDetectorTest2Page extends StatefulWidget {
+  const GestureDetectorTest2Page({key});
 
   @override
-  State<FingerFollowerDemo> createState() => _FingerFollowerDemoState();
+  State<GestureDetectorTest2Page> createState() => _GestureDetectorTest2PageState();
 }
 
-class _FingerFollowerDemoState extends State<FingerFollowerDemo> {
+class _GestureDetectorTest2PageState extends State<GestureDetectorTest2Page> {
   // 记录对象的位置
   Offset _position = const Offset(0, 0);
 
