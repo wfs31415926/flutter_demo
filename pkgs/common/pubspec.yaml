@@ -20,3 +20,9 @@ dependencies:
   logger: ^1.1.0
   http: ^0.13.4
   decimal: 2.3.2
+  carousel_slider: ^5.1.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - images/

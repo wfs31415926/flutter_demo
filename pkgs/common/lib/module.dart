@@ -8,6 +8,14 @@ class CommonModule {
     AppRoute.addPages([
       GetPage(name: CommonRoute.testDemo, page: () => TestPage()),
       GetPage(name: CommonRoute.unKnown, page: () => UnknownPage()),
+      GetPage(
+          name: CommonRoute.gestureTest, page: () => GestureDetectorTestPage()),
+      GetPage(
+          name: CommonRoute.gestureTest2,
+          page: () => GestureDetectorTest2Page()),
+      GetPage(
+          name: CommonRoute.gestureTest3,
+          page: () => GestureDetectorTest3Page()),
     ]);
     // HttpAPI.setup(httpAPI);
     // FlutterInfoAPI.setup(flutterInfoAPI);

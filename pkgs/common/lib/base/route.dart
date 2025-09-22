@@ -48,4 +48,7 @@ class CommonRoute {
 
   ///testDemo
   static const testDemo = "/testDemo";
+  static const gestureTest = "/gestureTest";
+  static const gestureTest2 = "/gestureTest2";
+  static const gestureTest3 = "/gestureTest3";
 }

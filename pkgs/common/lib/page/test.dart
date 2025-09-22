@@ -1,3 +1,5 @@
+import 'package:common/page/carousel_fullScreen.dart';
+import 'package:common/page/carousel_test.dart';
 import 'package:common/page/gesture_detector_test.dart';
 import 'package:common/page/gesture_detector_test2.dart';
 import 'package:common/page/gesture_detector_test3.dart';
@@ -38,7 +40,10 @@ class _TestPageState extends State<TestPage> {
           Get.to(const GestureDetectorTest3Page());
         },
         "图片轮播--全图": () {
-          // Get.to(const GestureDetectorTestPage());
+          Get.to(CarouselTestPage());
+        },
+        "图片轮播--全屏": () {
+          Get.to(CarouselFullScreenPage());
         }
       }
     },
