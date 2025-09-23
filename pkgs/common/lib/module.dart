@@ -16,6 +16,12 @@ class CommonModule {
       GetPage(
           name: CommonRoute.gestureTest3,
           page: () => GestureDetectorTest3Page()),
+      GetPage(name: CommonRoute.carouselTest, page: () => CarouselTestPage()),
+      GetPage(
+          name: CommonRoute.carouselFullScreen,
+          page: () => CarouselFullScreenPage()),
+      GetPage(
+          name: CommonRoute.carouselSetting, page: () => CarouselSettingPage()),
     ]);
     // HttpAPI.setup(httpAPI);
     // FlutterInfoAPI.setup(flutterInfoAPI);

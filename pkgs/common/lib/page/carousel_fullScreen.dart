@@ -1,9 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:common/comm.dart';
 import 'package:common/resource/style.dart';
+import 'package:common/utils/log.dart';
+import 'package:common/widget/float_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 final List<String> netImgList = [
   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
@@ -28,6 +31,8 @@ class CarouselFullScreenPage extends StatefulWidget {
 }
 
 class _CarouselFullScreenPageState extends State<CarouselFullScreenPage> {
+  OverlayEntry? overlayEntry;
+
   @override
   void initState() {
     super.initState();
@@ -36,6 +41,10 @@ class _CarouselFullScreenPageState extends State<CarouselFullScreenPage> {
     //强制横屏
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    WidgetsBinding.instance.addPostFrameCallback((callback) {
+      // showEntry();
+      FloatingButtonManager.showButton();
+    });
   }
 
   @override
@@ -45,7 +54,31 @@ class _CarouselFullScreenPageState extends State<CarouselFullScreenPage> {
     // 强制竖屏
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    // dismissEntry();
+    FloatingButtonManager.hideButton();
     super.dispose();
+  }
+
+  ///弹窗
+  void showEntry() {
+    dismissEntry();
+    overlayEntry = OverlayEntry(builder: (context) {
+      return FloatWidget(
+        () {
+          Get.toNamed(CommonRoute.carouselSetting);
+        },
+        () {
+          dismissEntry();
+        },
+      );
+    });
+    Overlay.of(Get.overlayContext!).insert(overlayEntry!);
+  }
+
+  ///移除
+  void dismissEntry() {
+    overlayEntry?.remove();
+    overlayEntry = null;
   }
 
   @override
@@ -53,7 +86,7 @@ class _CarouselFullScreenPageState extends State<CarouselFullScreenPage> {
     return Scaffold(
         body: Container(
       decoration: commonImageDecoration(
-          AssetImage("packages/common/images/background_1.jpg")),
+          AssetImage("packages/common/images/background_2.jpg")),
       child: Column(children: [
         CarouselSlider(
           options: CarouselOptions(

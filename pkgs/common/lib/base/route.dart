@@ -45,10 +45,11 @@ class UserRoute {
 class CommonRoute {
   ///404 notFind
   static const unKnown = "/404";
-
-  ///testDemo
   static const testDemo = "/testDemo";
   static const gestureTest = "/gestureTest";
   static const gestureTest2 = "/gestureTest2";
   static const gestureTest3 = "/gestureTest3";
+  static const carouselTest = "/carouselTest";
+  static const carouselFullScreen = "/carouselFullScreen";
+  static const carouselSetting = "/carouselSetting";
 }
