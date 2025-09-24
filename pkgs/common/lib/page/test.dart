@@ -39,7 +39,7 @@ class _TestPageState extends State<TestPage> {
         "手势组件3": () {
           Get.to(const GestureDetectorTest3Page());
         },
-        "图片轮播--全图": () {
+        "图片轮播--展示": () {
           Get.to(CarouselTestPage());
         },
         "图片轮播--全屏": () {

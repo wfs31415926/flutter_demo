@@ -32,6 +32,7 @@ class CarouselFullScreenPage extends StatefulWidget {
 
 class _CarouselFullScreenPageState extends State<CarouselFullScreenPage> {
   OverlayEntry? overlayEntry;
+  var bgIndex = 1.obs;
 
   @override
   void initState() {
@@ -43,7 +44,13 @@ class _CarouselFullScreenPageState extends State<CarouselFullScreenPage> {
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     WidgetsBinding.instance.addPostFrameCallback((callback) {
       // showEntry();
-      FloatingButtonManager.showButton();
+      // FloatingButtonManager.showButton(
+      //     marginRight: 16,
+      //     marginBottom: 16,
+      //     onTap: () {
+      //       Get.toNamed(CommonRoute.carouselSetting);
+      //     },
+      //     actionMini: true);
     });
   }
 
@@ -55,89 +62,84 @@ class _CarouselFullScreenPageState extends State<CarouselFullScreenPage> {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     // dismissEntry();
-    FloatingButtonManager.hideButton();
+    // FloatingButtonManager.hideButton();
     super.dispose();
   }
 
   ///弹窗
-  void showEntry() {
-    dismissEntry();
-    overlayEntry = OverlayEntry(builder: (context) {
-      return FloatWidget(
-        () {
-          Get.toNamed(CommonRoute.carouselSetting);
-        },
-        () {
-          dismissEntry();
-        },
-      );
-    });
-    Overlay.of(Get.overlayContext!).insert(overlayEntry!);
-  }
-
-  ///移除
-  void dismissEntry() {
-    overlayEntry?.remove();
-    overlayEntry = null;
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      decoration: commonImageDecoration(
-          AssetImage("packages/common/images/background_2.jpg")),
-      child: Column(children: [
-        CarouselSlider(
-          options: CarouselOptions(
-              autoPlay: true,
-              enlargeCenterPage: true,
-              viewportFraction: 0.8,
-              autoPlayAnimationDuration: Duration(milliseconds: 1800),
-              autoPlayCurve: Curves.easeInOut,
-              height: MediaQuery.of(context).size.height),
-          items: localImgList.map((item) {
-            return Builder(
-              builder: (BuildContext context) {
-                return Container(
-                    decoration: commonDecoration(
-                        radius: 9.w,
-                        color: Colors.transparent,
-                        boxBorder: Border.all(
-                            color: const Color(0XFFDC143C), width: 1.w)),
-                    margin: EdgeInsets.all(8.w),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(8.w)),
-                      child: Image.asset(
-                        item,
-                        width: double.infinity,
-                        fit: BoxFit.fitWidth,
-                      ),
-                    ));
-              },
-            );
-          }).toList(),
-        ),
-        // CarouselSlider(
-        //   options: CarouselOptions(
-        //       autoPlay: true,
-        //       enlargeCenterPage: true,
-        //       viewportFraction: 0.85,
-        //       autoPlayAnimationDuration: Duration(milliseconds: 400),
-        //       autoPlayCurve: Curves.easeInOut,
-        //       height: MediaQuery.of(context).size.height),
-        //   items: netImgList.map((item) {
-        //     return Builder(
-        //       builder: (BuildContext context) {
-        //         return Container(
-        //             decoration: BoxDecoration(color: Colors.transparent),
-        //             child: Image.network(item,
-        //                 width: double.infinity, fit: BoxFit.fitWidth));
-        //       },
-        //     );
-        //   }).toList(),
-        // )
-      ]),
-    ));
+      body: Obx(() {
+        return Container(
+            decoration: commonImageDecoration(AssetImage(
+                "packages/common/images/background_${bgIndex.value}.jpg")),
+            child: Column(children: [
+              CarouselSlider(
+                options: CarouselOptions(
+                    autoPlay: true,
+                    enlargeCenterPage: true,
+                    viewportFraction: 0.8,
+                    autoPlayAnimationDuration: Duration(milliseconds: 1800),
+                    autoPlayCurve: Curves.easeInOut,
+                    height: MediaQuery.of(context).size.height),
+                items: localImgList.map((item) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return Container(
+                          decoration: commonDecoration(
+                              radius: 9.w,
+                              color: Colors.transparent,
+                              boxBorder: Border.all(
+                                  color: const Color(0XFFDC143C), width: 1.w)),
+                          margin: EdgeInsets.all(8.w),
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.w)),
+                            child: Image.asset(
+                              item,
+                              width: double.infinity,
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ));
+                    },
+                  );
+                }).toList(),
+              ),
+              // CarouselSlider(
+              //   options: CarouselOptions(
+              //       autoPlay: true,
+              //       enlargeCenterPage: true,
+              //       viewportFraction: 0.85,
+              //       autoPlayAnimationDuration: Duration(milliseconds: 400),
+              //       autoPlayCurve: Curves.easeInOut,
+              //       height: MediaQuery.of(context).size.height),
+              //   items: netImgList.map((item) {
+              //     return Builder(
+              //       builder: (BuildContext context) {
+              //         return Container(
+              //             decoration: BoxDecoration(color: Colors.transparent),
+              //             child: Image.network(item,
+              //                 width: double.infinity, fit: BoxFit.fitWidth));
+              //       },
+              //     );
+              //   }).toList(),
+              // )
+            ]));
+      }),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.settings),
+        mini: true,
+        onPressed: () {
+          Get.toNamed(CommonRoute.carouselSetting, arguments: {
+            "bgIndex": bgIndex.value,
+            "callback": (selectedIndex) {
+              bgIndex.value = selectedIndex;
+            }
+          });
+        },
+      ),
+    );
   }
 }

@@ -14,10 +14,16 @@ class FloatingButtonManager {
 
   static OverlayEntry? _entry;
 
-  static void showButton() {
+  static void showButton(
+      {double? marginRight,
+      double? marginBottom,
+      Widget? actionWidget,
+      Function? onTap,
+      bool? actionMini}) {
     hideButton();
     _entry = OverlayEntry(
-      builder: (context) => const FloatingButtonWidget(),
+      builder: (context) => FloatingButtonWidget(
+          marginRight, marginBottom, actionWidget, onTap, actionMini),
     );
     Overlay.of(Get.overlayContext!).insert(_entry!);
   }
@@ -30,7 +36,16 @@ class FloatingButtonManager {
 
 // 悬浮按钮 Widget
 class FloatingButtonWidget extends StatefulWidget {
-  const FloatingButtonWidget({key});
+  double? marginRight;
+  double? marginBottom;
+  Widget? actionWidget;
+  Function? onTap;
+  bool? actionMini;
+
+  FloatingButtonWidget(this.marginRight, this.marginBottom, this.actionWidget,
+      this.onTap, this.actionMini,
+      {Key? key})
+      : super(key: key);
 
   @override
   _FloatingButtonWidgetState createState() => _FloatingButtonWidgetState();
@@ -40,14 +55,20 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      right: 20,
-      bottom: MediaQuery.of(context).padding.bottom + 20,
+      right: widget.marginRight ?? 20,
+      bottom:
+          MediaQuery.of(context).padding.bottom + (widget.marginBottom ?? 20),
       child: FloatingActionButton(
+        mini: widget.actionMini ?? false,
         onPressed: () {
-          Get.to(const TestPage());
+          if (widget.onTap != null) {
+            widget.onTap!.call();
+          } else {
+            Get.toNamed(CommonRoute.testDemo);
+          }
         },
         tooltip: "全局按钮",
-        child: const Icon(Icons.ac_unit),
+        child: widget.actionWidget ?? const Icon(Icons.settings),
       ),
     );
   }
