@@ -21,9 +21,13 @@ dependencies:
   http: ^0.13.4
   decimal: 2.3.2
   carousel_slider: ^5.1.1
+  audioplayers: ^6.4.0
 
 flutter:
   uses-material-design: true
   assets:
     - images/
     - icon/
+    - assets/
+    - assets/blinking_starts.mp3
+    - assets/audio/

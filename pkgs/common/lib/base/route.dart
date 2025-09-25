@@ -52,4 +52,5 @@ class CommonRoute {
   static const carouselTest = "/carouselTest";
   static const carouselFullScreen = "/carouselFullScreen";
   static const carouselSetting = "/carouselSetting";
+  static const audioPlay = "/audioPlay";
 }

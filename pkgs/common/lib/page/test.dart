@@ -44,6 +44,9 @@ class _TestPageState extends State<TestPage> {
         },
         "图片轮播--全屏": () {
           Get.to(CarouselFullScreenPage());
+        },
+        "音频播放": () {
+          Get.to(AudioPlayPage());
         }
       }
     },

@@ -1,9 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:common/comm.dart';
 import 'package:common/resource/style.dart';
-import 'package:common/utils/log.dart';
-import 'package:common/widget/float_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';

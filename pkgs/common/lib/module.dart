@@ -22,6 +22,7 @@ class CommonModule {
           page: () => CarouselFullScreenPage()),
       GetPage(
           name: CommonRoute.carouselSetting, page: () => CarouselSettingPage()),
+      GetPage(name: CommonRoute.audioPlay, page: () => AudioPlayPage()),
     ]);
     // HttpAPI.setup(httpAPI);
     // FlutterInfoAPI.setup(flutterInfoAPI);
