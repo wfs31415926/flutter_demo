@@ -13,14 +13,13 @@ class AudioPlayPage extends StatefulWidget {
 class _AudioPlayPageState extends State<AudioPlayPage> {
   var bgAudioPlay = "packages/common/images/bg_audio_play.jpg";
   late AudioPlayer player;
-  AssetSource assetSource = AssetSource("blinking_starts.mp3");
-  // DeviceFileSource fileSource =
-  //     DeviceFileSource("packages/common/assets/blinking_starts.mp3");
+  AssetSource assetSource = AssetSource("packages/common/assets/blinking_stars.mp3");
   UrlSource urlSource =
       UrlSource("https://music.163.com/song?id=2103798428&userid=6400601126");
 
   @override
   void initState() {
+    AudioCache.instance = AudioCache(prefix: '');//去除AssetSource资产前缀
     player = AudioPlayer();
     player.setReleaseMode(ReleaseMode.stop);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
