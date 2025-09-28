@@ -1,6 +1,8 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:common/comm.dart';
 import 'package:common/resource/style.dart';
+import 'package:common/widget/self_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -27,104 +29,132 @@ class CarouselFullScreenPage extends StatefulWidget {
   State<CarouselFullScreenPage> createState() => _CarouselFullScreenPageState();
 }
 
-class _CarouselFullScreenPageState extends State<CarouselFullScreenPage> {
+class _CarouselFullScreenPageState extends State<CarouselFullScreenPage>
+    with SingleTickerProviderStateMixin {
   OverlayEntry? overlayEntry;
   var bgIndex = 1.obs;
+  late SelfAudioPlayer selfAudioPlayer;
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
-    //设置全屏
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-    //强制横屏
+    //设置横屏
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
-    WidgetsBinding.instance.addPostFrameCallback((callback) {
-      // showEntry();
-      // FloatingButtonManager.showButton(
-      //     marginRight: 16,
-      //     marginBottom: 16,
-      //     onTap: () {
-      //       Get.toNamed(CommonRoute.carouselSetting);
-      //     },
-      //     actionMini: true);
-    });
+    _setFullScreen();
+    selfAudioPlayer = SelfAudioPlayer.instance;
+    selfAudioPlayer.setPlaySource(
+        AssetSource("packages/common/assets/blinking_stars.mp3"));
+    _controller =
+        AnimationController(vsync: this, duration: Duration(seconds: 20));
+    _animation =
+        Tween<double>(begin: 0, end: 2 * 3.1415926).animate(_controller);
   }
 
   @override
   void dispose() {
-    // 退出全屏模式
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    // 强制竖屏
+    // 恢复竖屏
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    // dismissEntry();
-    // FloatingButtonManager.hideButton();
+    // 退出全屏模式
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.dispose();
   }
 
-  ///弹窗
+  void _setFullScreen() {
+    // 多次设置确保生效
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    Future.delayed(Duration(milliseconds: 500), () {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    });
+  }
 
+  ///弹窗
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _setFullScreen();
+    });
     return Scaffold(
-      body: Obx(() {
-        return Container(
-            decoration: commonImageDecoration(AssetImage(
-                "packages/common/images/background_${bgIndex.value}.jpg")),
-            child: Column(children: [
-              CarouselSlider(
-                options: CarouselOptions(
-                    autoPlay: true,
-                    enlargeCenterPage: true,
-                    viewportFraction: 0.8,
-                    autoPlayAnimationDuration: Duration(milliseconds: 1800),
-                    autoPlayCurve: Curves.easeInOut,
-                    height: MediaQuery.of(context).size.height),
-                items: localImgList.map((item) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Container(
-                          decoration: commonDecoration(
-                              radius: 9.w,
-                              color: Colors.transparent,
-                              boxBorder: Border.all(
-                                  color: const Color(0XFFDC143C), width: 1.w)),
-                          margin: EdgeInsets.all(8.w),
-                          child: ClipRRect(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.w)),
-                            child: Image.asset(
-                              item,
-                              width: double.infinity,
-                              fit: BoxFit.fitWidth,
-                            ),
-                          ));
-                    },
-                  );
-                }).toList(),
-              ),
-              // CarouselSlider(
-              //   options: CarouselOptions(
-              //       autoPlay: true,
-              //       enlargeCenterPage: true,
-              //       viewportFraction: 0.85,
-              //       autoPlayAnimationDuration: Duration(milliseconds: 400),
-              //       autoPlayCurve: Curves.easeInOut,
-              //       height: MediaQuery.of(context).size.height),
-              //   items: netImgList.map((item) {
-              //     return Builder(
-              //       builder: (BuildContext context) {
-              //         return Container(
-              //             decoration: BoxDecoration(color: Colors.transparent),
-              //             child: Image.network(item,
-              //                 width: double.infinity, fit: BoxFit.fitWidth));
-              //       },
-              //     );
-              //   }).toList(),
-              // )
-            ]));
-      }),
+      body: Stack(
+        children: [
+          Obx(() {
+            return Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                decoration: commonImageDecoration(AssetImage(
+                    "packages/common/images/background_${bgIndex.value}.jpg")),
+                child: Column(children: [
+                  CarouselSlider(
+                    options: CarouselOptions(
+                        autoPlay: true,
+                        enlargeCenterPage: true,
+                        viewportFraction: 0.8,
+                        autoPlayAnimationDuration: Duration(milliseconds: 1800),
+                        autoPlayCurve: Curves.easeInOut,
+                        height: MediaQuery.of(context).size.height),
+                    items: localImgList.map((item) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Container(
+                              decoration: commonDecoration(
+                                  radius: 9.w,
+                                  color: Colors.transparent,
+                                  boxBorder: Border.all(
+                                      color: const Color(0XFFDC143C),
+                                      width: 1.w)),
+                              margin: EdgeInsets.all(8.w),
+                              child: ClipRRect(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.w)),
+                                child: Image.asset(
+                                  item,
+                                  width: double.infinity,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                              ));
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ]));
+          }),
+          Positioned(
+              bottom: 4.w,
+              left: 4.w,
+              child: GestureDetector(
+                onTap: () {
+                  var playState = selfAudioPlayer.playState;
+                  //开始播放(开始动画),暂停播放(停止动画),
+                  // 播放完成,自动停止(停止动画)或者轮播(继续动画)
+                  if (playState == PlayState.paused ||
+                      playState == PlayState.completed) {
+                    selfAudioPlayer.resume();
+                    _controller.repeat();
+                  } else {
+                    selfAudioPlayer.pause();
+                    _controller.stop();
+                  }
+                },
+                child: RotationTransition(
+                  turns: _animation,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(10.w)),
+                    child: Container(
+                      height: 20.w,
+                      width: 20.w,
+                      child: Image.asset(
+                        "packages/common/images/bg_audio_play.jpg",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+              ))
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.settings),
         mini: true,

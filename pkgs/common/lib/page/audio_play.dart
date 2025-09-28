@@ -13,13 +13,12 @@ class AudioPlayPage extends StatefulWidget {
 class _AudioPlayPageState extends State<AudioPlayPage> {
   var bgAudioPlay = "packages/common/images/bg_audio_play.jpg";
   late AudioPlayer player;
-  AssetSource assetSource = AssetSource("packages/common/assets/blinking_stars.mp3");
-  UrlSource urlSource =
-      UrlSource("https://music.163.com/song?id=2103798428&userid=6400601126");
+  AssetSource assetSource =
+      AssetSource("packages/common/assets/blinking_stars.mp3");
 
   @override
   void initState() {
-    AudioCache.instance = AudioCache(prefix: '');//去除AssetSource资产前缀
+    AudioCache.instance = AudioCache(prefix: ''); //去除AssetSource资产前缀
     player = AudioPlayer();
     player.setReleaseMode(ReleaseMode.stop);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -39,41 +38,6 @@ class _AudioPlayPageState extends State<AudioPlayPage> {
           child: PlayerWidget(
             player: player,
           ),
-          // child: ClipRRect(
-          //   borderRadius: BorderRadius.all(Radius.circular(100.w)),
-          //   child: Container(
-          //     width: 200.w,
-          //     height: 200.w,
-          //     child: Stack(
-          //       children: [
-          //         Container(
-          //           decoration: BoxDecoration(
-          //             image: DecorationImage(
-          //               image: AssetImage(bgAudioPlay),
-          //               fit: BoxFit.fitHeight,
-          //               colorFilter: ColorFilter.mode(
-          //                 Colors.black54,
-          //                 BlendMode.overlay,
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //         Container(
-          //             child: BackdropFilter(
-          //           filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
-          //           child: Opacity(
-          //             opacity: 0.5,
-          //             child: Container(
-          //               decoration: BoxDecoration(
-          //                 color: Colors.grey.shade900,
-          //               ),
-          //             ),
-          //           ),
-          //         )),
-          //       ],
-          //     ),
-          //   ),
-          // ),
         ));
   }
 }

@@ -48,13 +48,13 @@ class _FloatWidgetState extends State<FloatWidget> {
       onTap: widget.onTap,
       onDoubleTap: widget.onDoubleTap,
       onTapDown: (details) {
-        logger.d("onTapDown");
+        // logger.d("onTapDown");
       },
       onTapUp: (details) {
-        logger.d("onTapUp");
+        // logger.d("onTapUp");
       },
       onPanUpdate: (detail) {
-        logger.d("onPanUpdate");
+        // logger.d("onPanUpdate");
 
         double offsetY = dy + detail.delta.dy;
         dx = dx - detail.delta.dx;
@@ -84,7 +84,7 @@ class _FloatWidgetState extends State<FloatWidget> {
         });
       },
       onPanCancel: () {
-        logger.d("onPanCancel");
+        // logger.d("onPanCancel");
         setState(() {
           dx = defaultDx;
           duration = const Duration(milliseconds: 500);
