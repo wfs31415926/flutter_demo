@@ -3,6 +3,7 @@ import 'package:common/comm.dart';
 import 'package:common/module.dart';
 import 'package:common/resource/size.dart';
 import 'package:common/utils/log.dart';
+import 'package:common/utils/layout_log_print.dart';
 import 'package:common/widget/float_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -184,7 +185,9 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
       ),
       body: const Center(
-        child: Text("主页"),
+        child: Column(
+          children: [Text("主页"), LayoutLogPrint(child: Text("test"))],
+        ),
       ),
     );
   }

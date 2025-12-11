@@ -47,6 +47,9 @@ class _TestPageState extends State<TestPage> {
         },
         "音频播放": () {
           Get.to(AudioPlayPage());
+        },
+        "动画组件": () {
+          Get.to(AnimatedWidgetsTest());
         }
       }
     },
