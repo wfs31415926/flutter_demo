@@ -3,6 +3,7 @@ import 'package:common/page/carousel_test.dart';
 import 'package:common/page/gesture_detector_test.dart';
 import 'package:common/page/gesture_detector_test2.dart';
 import 'package:common/page/gesture_detector_test3.dart';
+import 'package:common/page/custom_widget_show.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../comm.dart';
@@ -50,6 +51,9 @@ class _TestPageState extends State<TestPage> {
         },
         "动画组件": () {
           Get.to(AnimatedWidgetsTest());
+        },
+        "自定义组件": () {
+          Get.to(CustomWidgetShow());
         }
       }
     },
