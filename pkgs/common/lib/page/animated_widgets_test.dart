@@ -120,6 +120,22 @@ class _AnimatedWidgetsTestState extends State<AnimatedWidgetsTest> {
               ),
             ),
           ),
+          TweenAnimationBuilder<Color?>(
+            duration: Duration(milliseconds: 2000),
+            tween: ColorTween(
+              begin: Colors.red,
+              end: Colors.blue,
+            ),
+            builder: (context, color, child) {
+              return Container(
+                width: 100,
+                height: 100,
+                color: color,
+                child: child,
+              );
+            },
+            child: Icon(Icons.star, color: Colors.white),
+          )
           // AnimatedDecoratedBox1(
           //   duration: Duration(
           //       milliseconds: _decorationColor == Colors.red ? 400 : 2000),

@@ -1,3 +1,4 @@
+import 'package:common/page/animation_show.dart';
 import 'package:common/page/carousel_fullScreen.dart';
 import 'package:common/page/carousel_test.dart';
 import 'package:common/page/gesture_detector_test.dart';
@@ -51,6 +52,9 @@ class _TestPageState extends State<TestPage> {
         },
         "动画组件": () {
           Get.to(AnimatedWidgetsTest());
+        },
+        "动画演示": () {
+          Get.to(AnimationShowPage());
         },
         "自定义组件": () {
           Get.to(CustomWidgetShow());
